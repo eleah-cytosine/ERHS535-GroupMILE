@@ -24,6 +24,13 @@ health <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tid
 
 
 ```{r join}
+#merge and clean up 1, redone into cleanup 2
+#cleanup 2
+cases_year <- cases_year %>%
+  select(-total_suspected_measles_rubella_cases, -rubella_total, -rubella_lab_confirmed, -rubella_epi_linked,
+         -rubella_clinical, -rubella_incidence_rate_per_1000000_total_population, -discarded_cases, 
+         -discarded_non_measles_rubella_cases_per_100000_total_population, -annualized_population_most_recent_year_only)
+
 cases_2025 <- cases_year %>%
   filter(year == "2025")
 
@@ -32,6 +39,15 @@ health_name <- health %>%
   filter(country %in% cases_2025$country)
 
 merged_cases_2025 <- full_join(cases_2025, health_name, by = "country")
+
+#check join success (looking at accents on words, etc)
+non_merged_cases_2025 <- anti_join(cases_2025, health_name, by = "country")
+#not all countries have the same name in both datasets, need to fuzzyjoin to fix this
 ```
 
+```{r}
+#clean up 3
+#merged_cases_2025 <- merged_cases_2025 %>%
+  #select(-ID_UC_G0)
+```
 
