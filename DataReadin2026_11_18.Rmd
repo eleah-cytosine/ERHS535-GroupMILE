@@ -23,3 +23,15 @@ health <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tid
 ```
 
 
+```{r join}
+cases_2025 <- cases_year %>%
+  filter(year == "2025")
+
+health_name <- health %>%
+  rename(country = GC_CNT_GAD_2025) %>%
+  filter(country %in% cases_2025$country)
+
+merged_cases_2025 <- full_join(cases_2025, health_name, by = "country")
+```
+
+
